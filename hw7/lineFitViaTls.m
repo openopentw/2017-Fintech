@@ -4,8 +4,8 @@
 close all; clear all;
 %% Parameters and data
 N=30;
-U=0.0000;
-D=-0.5005;
+U=0.0005;
+D=-0.0005;
 capital=1000;	% Initial cash
 file='spy.csv';
 fprintf('Reading %s...\n', file);
@@ -13,15 +13,13 @@ fprintf('Reading %s...\n', file);
 adjClose=num(:,5)';
 %% Start rolling
 dataCount=length(adjClose);
-adjClose = adjClose(1:dataCount - 120);
-dataCount = dataCount - 120;
 suggestedAction=zeros(dataCount,1);	% suggested actions based on sharpe ratio, 1 for buy, -1 for sell
 ratio=zeros(dataCount,1);	% sharpe ratio
 unit=zeros(dataCount,1);	% unit of stock in hand
 total=zeros(dataCount,1);	% total assets
 realAction=zeros(dataCount,1);	% real actions
 total(1)=capital;
-for i=dataCount - 30:dataCount
+for i=1:dataCount
 	[suggestedAction(i), ratio(i)]=myStrategy01(adjClose(1:i-1), N, U, D);	% Suggested action
 	currPrice=adjClose(i);	% Today's price
 	if i>1, unit(i)=unit(i-1); end		% Initial holding from yesterday
